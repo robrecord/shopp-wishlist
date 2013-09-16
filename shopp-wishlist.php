@@ -87,7 +87,9 @@ function shoppwishlist_parseQuery()
 {
 	global $wp_query, $Shopp, $user_ID;
 
-	if ( in_array( get_query_var( 'shoppwishlist' ), array( 'view', 'share' ) ) )
+	if( ! $wp_query ) return;
+
+	if ( in_array( $wp_query->get( 'shoppwishlist' ), array( 'view', 'share' ) ) )
 	{
 		$wp_query->is_single	= false;
 		$wp_query->is_page		= false;

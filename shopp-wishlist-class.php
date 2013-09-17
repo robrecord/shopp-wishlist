@@ -119,7 +119,7 @@ class ShoppWishlist
 
 				$pid = shopp( 'product', 'id', 'return=true' );
 
-				$this->url		= trailingslashit( get_option( 'siteurl' ) );
+				$this->url		= trailingslashit( get_bloginfo( 'url' ) );
 
 				switch( $options['type'] )
 				{

@@ -48,6 +48,7 @@ add_filter( 'shoppwishlist_page', 'shoppwishlistdiv' );
 add_action( 'widgets_init', create_function( '', 'return register_widget( "ShoppWishlist_Widget" );' ));
 
 add_shortcode( 'wishlist', 'shoppwishlist_output_wishlist' );
+add_shortcode( 'wishlistraw', 'shoppwishlist_output_wishlist_raw' );
 
 //register_activation_hook( __FILE__, 'shoppwishlist_activate_plugin' );
 
@@ -191,24 +192,24 @@ function shoppwishlist_update_wishlist_items( $items, $method = 'session' )
 /**
  * Desc: Use the shoppwishlist template to display the wishlist
  **/
-function shoppwishlist_template()
+function shoppwishlist_template($template='wishlist')
 {
 	if ( in_array( get_query_var( 'shoppwishlist' ), array( 'view', 'share' ) ) )
 	{
 		// is there a wishlist.php inside the shopp folder of the current theme?
-		if ( file_exists( get_query_template( 'shopp/wishlist' ) ) == true )
+		if ( file_exists( get_query_template( "shopp/$template" ) ) == true )
 		{
-			$template = get_query_template( 'shopp/wishlist' );
+			$template = get_query_template( "shopp/$template" );
 		}
 		// else: is there a wishlist.php inside the current theme?
-		elseif ( file_exists( get_query_template( 'wishlist' ) ) == true )
+		elseif ( file_exists( get_query_template( $template ) ) == true )
 		{
-			$template = get_query_template( 'wishlist' );
+			$template = get_query_template( $template );
 		}
 		// use the default wishlist.php
 		else
 		{
-			$template = SHOPP_WISHLIST_DIR . '/wishlist.php';
+			$template = SHOPP_WISHLIST_DIR . "/$template.php";
 		}
 
 		global $Shopp, $user_ID;
@@ -226,6 +227,10 @@ function shoppwishlist_output_wishlist()
 	shoppwishlist_template();
 } // end shoppwishlist_output_wishlist
 
+function shoppwishlist_output_wishlist_raw()
+{
+	shoppwishlist_template('wishlist-raw');
+} // end shoppwishlist_output_wishlist
 
 /**
  * Desc: Output the URL to the wishlist page, for backwards compatibility

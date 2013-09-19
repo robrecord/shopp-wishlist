@@ -192,29 +192,33 @@ function shoppwishlist_update_wishlist_items( $items, $method = 'session' )
 /**
  * Desc: Use the shoppwishlist template to display the wishlist
  **/
-function shoppwishlist_template($template='wishlist')
+function shoppwishlist_template( $template_name='wishlist' )
 {
+	if( empty($template_name) ) $template_name = 'wishlist'; // necessary - keep!
+
 	if ( in_array( get_query_var( 'shoppwishlist' ), array( 'view', 'share' ) ) )
 	{
 		// is there a wishlist.php inside the shopp folder of the current theme?
-		if ( file_exists( get_query_template( "shopp/$template" ) ) == true )
+		if ( file_exists( get_query_template( "shopp/$template_name" ) ) == true )
 		{
-			$template = get_query_template( "shopp/$template" );
+			$template = get_query_template( "shopp/$template_name" );
 		}
 		// else: is there a wishlist.php inside the current theme?
-		elseif ( file_exists( get_query_template( $template ) ) == true )
+		elseif ( file_exists( get_query_template( $template_name ) ) == true )
 		{
-			$template = get_query_template( $template );
+			$template = get_query_template( $template_name );
 		}
 		// use the default wishlist.php
 		else
 		{
-			$template = SHOPP_WISHLIST_DIR . "/$template.php";
+			$template = SHOPP_WISHLIST_DIR . "/$template_name.php";
 		}
 
 		global $Shopp, $user_ID;
-		include( $template );
-		exit();
+		$echo = include( $template );
+
+		if( $echo ) return $echo;
+		else exit();
 	}
 } // end shoppwishlist_template
 
@@ -224,12 +228,12 @@ function shoppwishlist_template($template='wishlist')
  **/
 function shoppwishlist_output_wishlist()
 {
-	shoppwishlist_template();
+	return shoppwishlist_template();
 } // end shoppwishlist_output_wishlist
 
 function shoppwishlist_output_wishlist_raw()
 {
-	shoppwishlist_template('wishlist-raw');
+	return shoppwishlist_template('wishlist-raw');
 } // end shoppwishlist_output_wishlist
 
 /**

@@ -217,7 +217,7 @@ function shoppwishlist_template( $template_name='wishlist' )
 		global $Shopp, $user_ID;
 		$echo = include( $template );
 
-		if( $echo ) return $echo;
+		if( $echo !== 1 ) return $echo;
 		else exit();
 	}
 } // end shoppwishlist_template
